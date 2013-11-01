@@ -19,6 +19,11 @@ model LatentEnthalpyFlowRate
     "Initial or guess value of measured specific latent enthalpy"
     annotation (Dialog(group="Initialization"));
 
+   Modelica.SIunits.Temperature TActual "fixme";
+   Modelica.SIunits.SpecificEnergy hCon "fixme";
+   Modelica.SIunits.SpecificEnergy wrong "fixme";
+
+   Real XiVap "fixme";
 protected
   Modelica.SIunits.SpecificEnthalpy hMed_out(start=h_out_start)
     "Medium latent enthalpy to which the sensor is exposed";
@@ -59,9 +64,11 @@ equation
   // Compute H_flow as difference between total enthalpy and enthalpy on non-condensing gas.
   // This is needed to compute the liquid vs. gas fraction of water, using the equations
   // provided by the medium model
-  hMed_out = (hActual -
-     (1-XiActual[i_x]) * Medium.enthalpyOfNonCondensingGas(
-       T=Medium.temperature(Medium.setState_phX(p=port_a.p, h=hActual, X=XiActual))));
+  TActual = Medium.temperature(Medium.setState_phX(p=port_a.p, h=hActual, X=XiActual));
+  hCon = Medium.enthalpyOfNonCondensingGas(T=TActual);
+  XiVap = XiActual[i_x];
+  wrong    = (hActual -(1-XiActual[i_x]) * hCon);
+  hMed_out = (hActual -(1-XiVap)         * hCon);
   if dynamic then
     der(h_out) = (hMed_out-h_out)*k/tau;
   else
