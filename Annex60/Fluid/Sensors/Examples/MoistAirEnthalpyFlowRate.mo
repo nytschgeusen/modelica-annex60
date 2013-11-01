@@ -98,7 +98,8 @@ equation
       color={0,127,255},
       smooth=Smooth.None));
     annotation (
-experiment(StopTime=60.0),
+experiment(StopTime=60.0,
+      Tolerance=1e-08),
 __Dymola_Commands(file="modelica://Annex60/Resources/Scripts/Dymola/Fluid/Sensors/Examples/MoistAirEnthalpyFlowRate.mos"
         "Simulate and plot"),
         Diagram(
