@@ -38,9 +38,6 @@ model MoistAirEnthalpyFlowRate
   Annex60.Fluid.Sensors.MassFlowRate senM_flow(
     redeclare package Medium = Medium) "Mass flow rate sensor"
                 annotation (Placement(transformation(extent={{28,10},{48,30}})));
-  Annex60.Utilities.Diagnostics.AssertEquality assEqu1
-    "Assert to check then enthalpy flow rate sensor"
-    annotation (Placement(transformation(extent={{60,60},{80,80}})));
   Modelica.Blocks.Math.Product product "Product to compute enthalpy flow rate"
     annotation (Placement(transformation(extent={{0,54},{20,74}})));
   Annex60.Fluid.Sensors.LatentEnthalpyFlowRate senHLat_flow(
@@ -54,9 +51,6 @@ model MoistAirEnthalpyFlowRate
   Modelica.Blocks.Math.Add add
     "Outputs the sensible plus latent enthalpy flow rate"
     annotation (Placement(transformation(extent={{20,-46},{40,-26}})));
-  Annex60.Utilities.Diagnostics.AssertEquality assEqu2
-    "Assert to check the sensible and latent enthalpy flow rate sensors"
-    annotation (Placement(transformation(extent={{80,-40},{100,-20}})));
 equation
   connect(ramp.y, sou.m_flow_in) annotation (Line(
       points={{-79,70},{-70,70},{-70,28},{-60,28}},
@@ -74,20 +68,12 @@ equation
       points={{20,20},{28,20}},
       color={0,127,255},
       smooth=Smooth.None));
-  connect(senH_flow.H_flow, assEqu1.u1)        annotation (Line(
-      points={{-20,31},{-20,94},{28,94},{28,76},{58,76}},
-      color={0,0,127},
-      smooth=Smooth.None));
   connect(senH.h_out, product.u1) annotation (Line(
       points={{10,31},{10,40},{-14,40},{-14,70},{-2,70}},
       color={0,0,127},
       smooth=Smooth.None));
   connect(senM_flow.m_flow, product.u2) annotation (Line(
       points={{38,31},{38,48},{-10,48},{-10,58},{-2,58}},
-      color={0,0,127},
-      smooth=Smooth.None));
-  connect(product.y, assEqu1.u2) annotation (Line(
-      points={{21,64},{58,64}},
       color={0,0,127},
       smooth=Smooth.None));
   connect(senHLat_flow.H_flow, add.u1) annotation (Line(
@@ -106,14 +92,6 @@ equation
     annotation (Line(
       points={{-40,-70},{-20,-70}},
       color={0,127,255},
-      smooth=Smooth.None));
-  connect(senH_flow.H_flow, assEqu2.u1) annotation (Line(
-      points={{-20,31},{-20,36},{70,36},{70,-24},{78,-24}},
-      color={0,0,127},
-      smooth=Smooth.None));
-  connect(add.y, assEqu2.u2)  annotation (Line(
-      points={{41,-36},{78,-36}},
-      color={0,0,127},
       smooth=Smooth.None));
   connect(senHSen_flow.port_b, sin.ports[1]) annotation (Line(
       points={{5.55112e-16,-70},{60,-70}},
