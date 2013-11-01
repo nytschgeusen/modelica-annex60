@@ -1,0 +1,4 @@
+loadModel(Modelica, {"3.2"}); 
+getErrorString();
+loadModel(Annex60); getErrorString();
+simulate(Annex60.Fluid.Sensors.Examples.MoistAirEnthalpyFlowRate); getErrorString();
