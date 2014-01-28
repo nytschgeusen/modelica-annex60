@@ -14,8 +14,12 @@ model Inlet "Model for exposing a fluid inlet to the FMI interface"
                 annotation (Placement(
         transformation(extent={{90,-10},{110,10}}), iconTransformation(extent={{90,-10},
             {110,10}})));
+  Modelica.Blocks.Interfaces.RealOutput p(unit="Pa") "Pressure" annotation (
+      Placement(transformation(
+        extent={{-10,-10},{10,10}},
+        rotation=270,
+        origin={0,-110})));
 equation
-  port.p          = inlet.p;
   port.m_flow     = inlet.m_flow;
   inStream(port.h_outflow)  = inlet.h_inflow;
   inStream(port.Xi_outflow) = inlet.Xi_inflow;
@@ -24,6 +28,8 @@ equation
   port.h_outflow  = inlet.h_outflow;
   port.Xi_outflow = inlet.Xi_outflow;
   port.C_outflow  = inlet.C_outflow;
+
+  p = port.p;
 
   annotation (defaultComponentName="boundary",
     Icon(coordinateSystem(
@@ -70,7 +76,15 @@ equation
         Text(
           extent={{-120,34},{-98,16}},
           lineColor={0,0,255},
-          textString="inlet")}),
+          textString="inlet"),
+        Line(
+          points={{0,-100},{0,-60}},
+          color={0,0,255},
+          smooth=Smooth.None),
+        Text(
+          extent={{2,-76},{24,-94}},
+          lineColor={0,0,255},
+          textString="p")}),
     Documentation(info="<html>
 <p>
 Defines prescribed values for boundary conditions:

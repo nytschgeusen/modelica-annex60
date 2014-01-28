@@ -15,6 +15,11 @@ model Outlet "Model for exposing a fluid outlet to the FMI interface"
         transformation(extent={{-110,-10},{-90,10}}),
                                                     iconTransformation(extent={{-110,
             -10},{-90,10}})));
+  Modelica.Blocks.Interfaces.RealInput p(unit="Pa") "Pressure" annotation (
+      Placement(transformation(
+        extent={{-20,-20},{20,20}},
+        rotation=90,
+        origin={0,-120})));
 equation
   port.p          = outlet.p;
   port.m_flow     = outlet.m_flow;
@@ -48,9 +53,17 @@ equation
           fillPattern=FillPattern.HorizontalCylinder,
           fillColor={0,127,255}),
         Text(
-          extent={{86,30},{108,12}},
+          extent={{66,40},{100,0}},
           lineColor={0,0,255},
-          textString="outlet")}),
+          textString="outlet"),
+        Line(
+          points={{0,-60},{0,-100}},
+          color={0,0,255},
+          smooth=Smooth.None),
+        Text(
+          extent={{10,-64},{44,-104}},
+          lineColor={0,0,255},
+          textString="p")}),
     Documentation(info="<html>
 <p>
 Defines output values for boundary conditions:

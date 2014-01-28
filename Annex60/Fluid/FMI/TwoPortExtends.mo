@@ -15,16 +15,6 @@ model TwoPortExtends
 
   Interfaces.Outlet outlet(redeclare final package Medium = Medium) annotation (Placement(transformation(extent={{100,
             -10},{120,10}}), iconTransformation(extent={{100,-10},{120,10}})));
-  annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},
-            {100,100}}), graphics={Rectangle(extent={{-100,100},{100,-100}},
-            lineColor={0,0,255}),
-            Text(
-          extent={{-151,147},{149,107}},
-          lineColor={0,0,255},
-          fillPattern=FillPattern.HorizontalCylinder,
-          fillColor={0,127,255},
-          textString="%name")}), Diagram(coordinateSystem(preserveAspectRatio=false,
-                   extent={{-100,-100},{100,100}}), graphics));
 equation
   port_a.p          = inlet.p;
   port_a.m_flow     = inlet.m_flow;
@@ -46,4 +36,14 @@ equation
   inStream(port_b.Xi_outflow) = outlet.Xi_inflow;
   inStream(port_b.C_outflow)  = outlet.C_inflow;
 
+  annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},
+            {100,100}}), graphics={Rectangle(extent={{-100,100},{100,-100}},
+            lineColor={0,0,255}),
+            Text(
+          extent={{-151,147},{149,107}},
+          lineColor={0,0,255},
+          fillPattern=FillPattern.HorizontalCylinder,
+          fillColor={0,127,255},
+          textString="%name")}), Diagram(coordinateSystem(preserveAspectRatio=false,
+                   extent={{-100,-100},{100,100}}), graphics));
 end TwoPortExtends;
