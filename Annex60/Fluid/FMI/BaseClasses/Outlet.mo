@@ -21,7 +21,11 @@ model Outlet "Model for exposing a fluid outlet to the FMI interface"
         rotation=90,
         origin={0,-120})));
 equation
-  port.p          = outlet.p;
+  // Set outlet pressure and port pressure to pressure
+  // of signal port
+  outlet.p        = p;
+  port.p          = p;
+
   port.m_flow     = outlet.m_flow;
   port.h_outflow  = outlet.h_outflow;
   port.Xi_outflow = outlet.Xi_outflow;

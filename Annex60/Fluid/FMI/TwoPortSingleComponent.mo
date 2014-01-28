@@ -4,12 +4,15 @@ block TwoPortSingleComponent
   extends TwoPort;
   replaceable Modelica.Fluid.Interfaces.PartialTwoPort partialTwoPort
     constrainedby Modelica.Fluid.Interfaces.PartialTwoPort(
-      redeclare final package Medium = Medium,
+      redeclare package Medium = Medium,
       final allowFlowReversal=allowFlowReversal)
     annotation (Placement(transformation(extent={{-10,-10},{10,10}})));
   parameter Boolean allowFlowReversal = true
     "= true to allow flow reversal, false restricts to design direction (port_a -> port_b)"
     annotation(Dialog(tab="Assumptions"), Evaluate=true);
+  Modelica.Blocks.Math.Feedback pOut "Pressure at component outlet"
+    annotation (Placement(transformation(extent={{10,-70},{30,-50}})));
+
 protected
   BaseClasses.Inlet bouIn(redeclare final package Medium=Medium)
     "Boundary model for inlet"
@@ -17,11 +20,9 @@ protected
   BaseClasses.Outlet bouOut(redeclare final package Medium=Medium)
     "Boundary component for outlet"
     annotation (Placement(transformation(extent={{60,-10},{80,10}})));
-public
+
   Sensors.RelativePressure senRelPre(redeclare package Medium = Medium)
     annotation (Placement(transformation(extent={{-10,-44},{10,-24}})));
-  Modelica.Blocks.Math.Feedback pOut "Pressure at component outlet"
-    annotation (Placement(transformation(extent={{10,-70},{30,-50}})));
 equation
   connect(inlet, bouIn.inlet) annotation (Line(
       points={{-110,0},{-81,0}},

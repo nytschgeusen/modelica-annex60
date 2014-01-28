@@ -1,7 +1,8 @@
 within Annex60.Fluid.FMI;
 block Fixme
-   extends Annex60.Fluid.FMI.TwoPortSingleComponent(redeclare
-      HeatExchangers.HeaterCoolerPrescribed partialTwoPort(
+   extends Annex60.Fluid.FMI.TwoPortSingleComponent(
+     redeclare package Medium = Annex60.Media.Water,
+     redeclare HeatExchangers.HeaterCoolerPrescribed partialTwoPort(
       m_flow_nominal=m_flow_nominal,
       dp_nominal=dp_nominal,
       Q_flow_nominal=Q_flow_nominal));

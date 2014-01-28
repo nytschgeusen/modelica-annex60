@@ -29,7 +29,8 @@ equation
   port.Xi_outflow = inlet.Xi_outflow;
   port.C_outflow  = inlet.C_outflow;
 
-  p = port.p;
+  // Send inlet pressure to signal port p
+  p = inlet.p;
 
   annotation (defaultComponentName="boundary",
     Icon(coordinateSystem(
