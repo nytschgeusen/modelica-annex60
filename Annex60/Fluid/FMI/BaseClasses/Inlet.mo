@@ -21,13 +21,13 @@ model Inlet "Model for exposing a fluid inlet to the FMI interface"
         origin={0,-110})));
 equation
   port.m_flow     = inlet.m_flow;
-  inStream(port.h_outflow)  = inlet.h_inflow;
-  inStream(port.Xi_outflow) = inlet.Xi_inflow;
-  inStream(port.C_outflow)  = inlet.C_inflow;
+  port.h_outflow  = inlet.h_inflow;
+  port.Xi_outflow = inlet.Xi_inflow;
+  port.C_outflow  = inlet.C_inflow;
 
-  port.h_outflow  = inlet.h_outflow;
-  port.Xi_outflow = inlet.Xi_outflow;
-  port.C_outflow  = inlet.C_outflow;
+  inStream(port.h_outflow)  = inlet.h_outflow;
+  inStream(port.Xi_outflow) = inlet.Xi_outflow;
+  inStream(port.C_outflow)  = inlet.C_outflow;
 
   // Send inlet pressure to signal port p
   p = inlet.p;

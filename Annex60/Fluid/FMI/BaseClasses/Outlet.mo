@@ -27,13 +27,13 @@ equation
   port.p          = p;
 
   port.m_flow     = outlet.m_flow;
-  port.h_outflow  = outlet.h_outflow;
-  port.Xi_outflow = outlet.Xi_outflow;
-  port.C_outflow  = outlet.C_outflow;
+  inStream(port.h_outflow)  = outlet.h_outflow;
+  inStream(port.Xi_outflow) = outlet.Xi_outflow;
+  inStream(port.C_outflow)  = outlet.C_outflow;
 
-  inStream(port.h_outflow)  = outlet.h_inflow;
-  inStream(port.Xi_outflow) = outlet.Xi_inflow;
-  inStream(port.C_outflow)  = outlet.C_inflow;
+  port.h_outflow  = outlet.h_inflow;
+  port.Xi_outflow = outlet.Xi_inflow;
+  port.C_outflow  = outlet.C_inflow;
 
     annotation (defaultComponentName="boundary",
     Icon(coordinateSystem(
