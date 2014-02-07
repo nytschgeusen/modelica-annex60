@@ -2,10 +2,11 @@ within Annex60.Fluid.FMI;
 block TwoPortSingleComponent
   "Container to export a single thermofluid flow model with two ports as an FMU"
   extends TwoPort;
-  replaceable Modelica.Fluid.Interfaces.PartialTwoPort partialTwoPort
-    constrainedby Modelica.Fluid.Interfaces.PartialTwoPort(
+  replaceable Modelica.Fluid.Interfaces.PartialTwoPort com constrainedby
+    Modelica.Fluid.Interfaces.PartialTwoPort(
       redeclare package Medium = Medium,
       final allowFlowReversal=allowFlowReversal)
+    "Component that is replaced by actual model"
     annotation (Placement(transformation(extent={{-10,-10},{10,10}})));
   parameter Boolean allowFlowReversal = true
     "= true to allow flow reversal, false restricts to design direction (port_a -> port_b)"
@@ -22,7 +23,11 @@ protected
     annotation (Placement(transformation(extent={{60,-10},{80,10}})));
 
   Sensors.RelativePressure senRelPre(redeclare package Medium = Medium)
+    "Sensor for pressure difference across the component"
     annotation (Placement(transformation(extent={{-10,-44},{10,-24}})));
+public
+  Modelica.Blocks.Sources.Constant const(k=22222)
+    annotation (Placement(transformation(extent={{36,-94},{56,-74}})));
 equation
   connect(inlet, bouIn.inlet) annotation (Line(
       points={{-110,0},{-81,0}},
@@ -32,11 +37,11 @@ equation
       points={{81,0},{110,0}},
       color={0,0,255},
       smooth=Smooth.None));
-  connect(bouIn.port, partialTwoPort.port_a) annotation (Line(
+  connect(bouIn.port, com.port_a) annotation (Line(
       points={{-60,0},{-42,0},{-42,4.44089e-16},{-10,4.44089e-16}},
       color={0,127,255},
       smooth=Smooth.None));
-  connect(senRelPre.port_a, partialTwoPort.port_a) annotation (Line(
+  connect(senRelPre.port_a, com.port_a) annotation (Line(
       points={{-10,-34},{-40,-34},{-40,4.44089e-16},{-10,4.44089e-16}},
       color={0,127,255},
       smooth=Smooth.None));
@@ -48,17 +53,17 @@ equation
       points={{4.44089e-16,-43},{4.44089e-16,-80},{20,-80},{20,-68}},
       color={0,0,127},
       smooth=Smooth.None));
-  connect(pOut.y, bouOut.p) annotation (Line(
-      points={{29,-60},{70,-60},{70,-12}},
-      color={0,0,127},
+  connect(bouOut.port, com.port_b) annotation (Line(
+      points={{60,0},{10,0}},
+      color={0,127,255},
       smooth=Smooth.None));
-  connect(senRelPre.port_b, partialTwoPort.port_b) annotation (Line(
+  connect(senRelPre.port_b, com.port_b) annotation (Line(
       points={{10,-34},{40,-34},{40,0},{10,0}},
       color={0,127,255},
       smooth=Smooth.None));
-  connect(bouOut.port, partialTwoPort.port_b) annotation (Line(
-      points={{60,0},{10,0}},
-      color={0,127,255},
+  connect(pOut.y, bouOut.p) annotation (Line(
+      points={{29,-60},{70,-60},{70,-12}},
+      color={0,0,127},
       smooth=Smooth.None));
   annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
             -100},{100,100}}), graphics));
