@@ -15,9 +15,7 @@ model ConservationEquation "Lumped volume with mass and energy balance"
   Medium.BaseProperties medium(
     preferredMediumStates= not (energyDynamics == Modelica.Fluid.Types.Dynamics.SteadyState),
     p(start=p_start,
-      nominal=Medium.p_default,
-      stateSelect=if not (massDynamics == Modelica.Fluid.Types.Dynamics.SteadyState)
-                     then StateSelect.prefer else StateSelect.default),
+      nominal=Medium.p_default),
     h(start=hStart),
     T(start=T_start,
       nominal=Medium.T_default,
@@ -261,6 +259,22 @@ Annex60.Fluid.Storage.ExpansionVessel</a>.
 </p>
 </html>", revisions="<html>
 <ul>
+<li>
+February 6, 2014 by Michael Wetter:<br/>
+Removed <pre>
+p(stateSelect=if not (massDynamics == Modelica.Fluid.Types.Dynamics.SteadyState)
+then StateSelect.prefer else StateSelect.default)
+</pre>
+because the previous declaration led to the translation error 
+<pre>
+The model requires derivatives of some inputs as listed below:
+1 inlet.m_flow
+1 inlet.p
+</pre>
+when translating 
+<a href=\"modelica://Annex60.Fluid.FMI.Examples.HeaterCoolerPrescribed\">
+Annex60.Fluid.FMI.Examples.HeaterCoolerPrescribed</a>.
+</li>
 <li>
 September 17, 2013 by Michael Wetter:<br/>
 Added start value for <code>hOut</code>.
