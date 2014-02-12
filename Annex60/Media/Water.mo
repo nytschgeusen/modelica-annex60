@@ -28,8 +28,7 @@ package Water "Package with model for liquid water with constant properties"
   redeclare model extends BaseProperties(
      T(stateSelect=if
           preferredMediumStates then StateSelect.prefer else StateSelect.default),
-     p(stateSelect=if
-          preferredMediumStates then StateSelect.prefer else StateSelect.default),
+     p(stateSelect=StateSelect.never),
      preferredMediumStates=true) "Base properties"
   equation
     h = (T - reference_T)*cp_const;
@@ -779,6 +778,27 @@ Water is modeled as an incompressible liquid, and there are no phase changes.
 </p>
 </html>", revisions="<html>
 <ul>
+<li>
+February 6, 2014, by Michael Wetter:<br/>
+Replaced in <code>BaseProperties</code> the declaration 
+<pre>
+ p(stateSelect=if 
+     preferredMediumStates then StateSelect.prefer else StateSelect.default)
+</pre>
+with
+<pre>
+p(stateSelect=StateSelect.never)
+</pre>
+because the previous declaration led the translation error 
+<pre>
+The model requires derivatives of some inputs as listed below:
+1 inlet.m_flow
+1 inlet.p
+</pre>
+when translating 
+<a href=\"modelica://Annex60.Fluid.FMI.Examples.HeaterCoolerPrescribed\">
+Annex60.Fluid.FMI.Examples.HeaterCoolerPrescribed</a>.
+</li>
 <li>
 December 18, 2013, by Michael Wetter:<br/>
 First implementation.
