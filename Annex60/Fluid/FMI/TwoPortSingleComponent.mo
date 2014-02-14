@@ -25,9 +25,6 @@ protected
   Sensors.RelativePressure senRelPre(redeclare package Medium = Medium)
     "Sensor for pressure difference across the component"
     annotation (Placement(transformation(extent={{-10,-44},{10,-24}})));
-public
-  Modelica.Blocks.Sources.Constant const(k=22222)
-    annotation (Placement(transformation(extent={{36,-94},{56,-74}})));
 equation
   connect(inlet, bouIn.inlet) annotation (Line(
       points={{-110,0},{-81,0}},
