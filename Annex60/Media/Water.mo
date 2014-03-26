@@ -51,9 +51,8 @@ algorithm
     if state.T < 278.15 then
       -0.042860825*state.T + 1011.9695761
     elseif state.T < 373.15 then
-      0.000015009*(state.T - 273.15)^3
-        - 0.00583576*(state.T-273.15)^2 + 0.0143711*state.T
-        + 996.194534035
+      0.000015009*state.T^3 - 0.01813488505*state.T^2 + 6.5619527954075*state.T
+      + 254.900074971947
     else
      -0.7025109*state.T + 1220.35045233);
   annotation (smoothOrder=1,
@@ -171,7 +170,7 @@ end specificInternalEnergy;
 redeclare function extends specificEntropy "Return the specific entropy"
   extends Modelica.Icons.Function;
 algorithm
-  s := cv_const*Modelica.Math.log(state.T/273.15);
+  s := cv_const*Modelica.Math.log(state.T/reference_T);
   annotation (
     Documentation(info="<html>
 <p>
@@ -262,22 +261,21 @@ end isentropicEnthalpy;
 
 redeclare function extends isobaricExpansionCoefficient
     "Return the isobaric expansion coefficient"
-  protected
-    Modelica.SIunits.Conversions.NonSIunits.Temperature_degC T_degC
-      "Celsius temperature";
 algorithm
-    T_degC :=state.T + Modelica.Constants.T_zero;
     beta := -smooth(0,
     if state.T < 278.15 then
       0.042860825*(0.042860825*state.T - 1011.9695761)/(-0.042860825*state.T +
       1011.9695761)^2
     elseif state.T < 373.15 then
-       ((4.5027e-05)*T_degC^2 - 0.01167152*state.T +
-              3.202446788)/((1.5009e-05)*T_degC^3 - 0.00583576*T_degC^2 +
-              0.0143711*state.T + 996.194534035)
+      (4.5027e-5*state.T^2 - 0.0362697701*state.T + 6.5619527954075)/
+        (1.5009e-5*state.T^3 - 0.01813488505*state.T^2 + 6.5619527954075*state.T + 254.900074971947)
     else
        0.7025109*(0.7025109*state.T - 1220.35045233)/(-0.7025109*state.T +
        1220.35045233)^2);
+        // Symbolic conversion of degC to Kelvin
+//        ((4.5027e-05)*T_degC^2 - 0.01167152*state.T +
+//               3.202446788)/((1.5009e-05)*T_degC^3 - 0.00583576*T_degC^2 +
+//               0.0143711*state.T + 996.194534035)
 annotation (
 Documentation(info="<html>
 <p>
@@ -429,7 +427,7 @@ end specificHeatCapacityCp;
 redeclare replaceable function extends specificHeatCapacityCv
     "Return the specific heat capacity at constant volume"
 algorithm
-  cv := cp_const;
+  cv := cv_const;
     annotation(derivative=der_specificHeatCapacityCp,
 Documentation(info="<html>
 <p>
@@ -449,12 +447,20 @@ end specificHeatCapacityCv;
 redeclare function extends thermalConductivity
     "Return the thermal conductivity"
 algorithm
-  lambda := lambda_const; /* fixme: check if this is a valid assumption */
+  lambda :=0.6065*(-1.48445 + 4.12292*(state.T/298.15) - 1.63866*(state.T/298.15)^2);
   annotation (
 Documentation(info="<html>
 <p>
-This function returns the thermal conductivity,
-which is assumed to be constant.
+This function returns the thermal conductivity.
+The expression is obtained from Ramires et al. (1995).
+</p>
+<h4>References</h4>
+<p>
+Ramires, Maria L. V. and Nieto de Castro, Carlos A. and Nagasaka, Yuchi 
+and Nagashima, Akira and Assael, Marc J. and Wakeham, William A.
+Standard Reference Data for the Thermal Conductivity of Water.
+<i>Journal of Physical and Chemical Reference Data</i>, 24, p. 1377-1381, 1995.
+<a href=\"http://dx.doi.org/10.1063/1.555963\">DOI:10.1063/1.555963</a>.
 </p>
 </html>",
 revisions="<html>
@@ -608,7 +614,7 @@ algorithm
   // The temperature is obtained from symbolic solving the
   // specificEntropy function for T, i.e.,
   // s := cv_const*Modelica.Math.log(state.T/reference_T)
-  state := ThermodynamicState(p=p, T=273.15 * Modelica.Math.exp(s/cv_const));
+  state := ThermodynamicState(p=p, T=reference_T * Modelica.Math.exp(s/cv_const));
   annotation (
 Inline=false,
 Documentation(info="<html>
@@ -642,8 +648,7 @@ end setState_psX;
 protected
   final constant Modelica.SIunits.SpecificHeatCapacity cv_const = cp_const
     "Specific heat capacity at constant volume";
-  constant Modelica.SIunits.ThermalConductivity lambda_const=0.598
-    "Constant thermal conductivity";
+
   constant Modelica.SIunits.VelocityOfSound a_const=1484
     "Constant velocity of sound";
   constant Modelica.SIunits.MolarMass MM_const=0.018015268 "Molar mass";
