@@ -385,6 +385,10 @@ fixme: has this model been validated? (cross-validated, analytical, empirical)
 </html>", revisions="<html>
 <ul>
 <li>
+July 27, 2014, by Damien Picard:<br/>
+Adapt documentation as a proposition for A60
+</li>
+<li>
 May 29, 2014, by Michael Wetter:<br/>
 Removed undesirable annotation <code>Evaluate=true</code>.
 </li>
