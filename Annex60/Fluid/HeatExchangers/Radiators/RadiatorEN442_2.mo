@@ -358,9 +358,29 @@ finite volume approach for the
 water and the metal mass, which are both assumed to be at the same
 temperature. 
 </p>
+<h3> Assumptions and limitations </h3>
 <p>
-The default parameters for the heat capacities are valid for a flat plate radiator without fins, 
-with one plate of water carying fluid, and a height of 0.42 meters.
+<ul>
+<li> The model approximates the exponential temperature profile by a sum of linear elements. 
+?fixme Guideline for number of elements
+</li>
+<li> No pressure drop calculated
+</li>
+</ul>
+</p>
+<h3> Model use and important parameters </h3>
+<p>
+The default parameters for the heat capacities are valid for a flat plate radiator without fins, with one plate 
+of water carrying fluid, and a height of 0.42 meters.
+</p>
+<p> 
+The fraction radiant heat transfer fraRad varies between 0.1 and 0.5 according to the type of radiator 
+(see norm EN 442-2). The heat transfer exponent is typically around 1.3 and it should be given 
+in the data sheet of the radiator.
+</p>
+<h3>Validation</h3>
+<p>
+fixme: has this model been validated? (cross-validated, analytical, empirical)
 </p>
 </html>", revisions="<html>
 <ul>
