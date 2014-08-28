@@ -320,6 +320,7 @@ the room temperature at low mass flow rates.
 Furthermore, rather than using only one room temperature, this model uses
 a room air and room radiation temperature.
 </p>
+<h3>Main equations</h3>
 <p>
 The transferred heat is modeled as follows:
 Let <i>N</i> denote the number of elements used to discretize the radiator model.
