@@ -20,7 +20,7 @@ equation
       color={0,0,127},
       smooth=Smooth.None));
     connect(filter.y, N_actual) annotation (Line(
-      points={{34.7,88},{38.35,88},{38.35,70},{50,70}},
+      points={{34.7,88},{38.35,88},{38.35,50},{110,50}},
       color={0,0,127},
       smooth=Smooth.None));
     connect(filter.y, N_filtered) annotation (Line(
@@ -30,7 +30,7 @@ equation
 
   else
     connect(Nrpm, N_actual) annotation (Line(
-      points={{1.11022e-15,120},{0,120},{0,70},{50,70}},
+      points={{1.11022e-15,120},{0,120},{0,50},{110,50}},
       color={0,0,127},
       smooth=Smooth.None));
   end if;
@@ -42,20 +42,27 @@ equation
     Diagram(coordinateSystem(preserveAspectRatio=true,  extent={{-100,-100},{100,
             100}}),     graphics),
     Documentation(info="<html>
-This model describes a fan or pump with prescribed speed in revolutions per minute.
-The head is computed based on the performance curve that take as an argument
-the actual volume flow rate divided by the maximum flow rate and the relative
-speed of the fan.
-The efficiency of the device is computed based
-on the efficiency curves that take as an argument
-the actual volume flow rate divided by the maximum possible volume flow rate, or
-based on the motor performance curves.
-<br/>
-<p>
-See the 
-<a href=\"modelica://Annex60.Fluid.Movers.UsersGuide\">
-User's Guide</a> for more information.
-</p>
+<p>This is a model of a pump that needs to be controlled using an rpm setpoint. The mass flow rate is calculated from the pressure drop (or vice versa) based on a pump curve. Pump curves for the pressure drop and electrical power need to be provided as a series of working points for the pressure, volume flow rate and electrical power at the nominal rpm. Similarity laws are then applied for using the pump curves at non-nominal rpms. For low rpms a linear mass flow characteristic is assumed.</p>
+<p><br><b>Main equations</b></p>
+<p>The nominal pump curves are expressed using a series of points expressing the pressure drop dp and electrical power P as a function of m_flow at rpm n0:</p>
+<p><img src=\"modelica://Annex60/Images/equations/equation-cmRgpUYo.png\" alt=\"dp_n0 = f(m_flow_n0)\"/></p>
+<p><img src=\"modelica://Annex60/Images/equations/equation-x18dZPYZ.png\" alt=\"P_n0 = f(m_flow_n0)\"/></p>
+<p>Similarity laws are applied for other mass flow rates:</p>
+<p><img src=\"modelica://Annex60/Images/equations/equation-atqIflFQ.png\" alt=\"m_flow_n / m_flow_n0 = n/n0\"/></p>
+<p><img src=\"modelica://Annex60/Images/equations/equation-3K68khAS.png\" alt=\"dp_n/dp_n0 = (n/n0)^2\"/></p>
+<p><img src=\"modelica://Annex60/Images/equations/equation-n3bX8g6e.png\" alt=\"P/P_n0 = (n/n0)^3\"/></p>
+<p>For low values of n/n0 an approximation is used.</p>
+<p><br><b>Assumptions and limitations </b></p>
+<p>The bevaviour of this model for low values of n/n0 is not necessarily correct. </p>
+<p>The pump pressure curve should be decreasing to avoid the presence of multiple possible solutions for the mass flow rate.</p>
+<p><br><b>Model use and important parameters </b></p>
+<p>The most important pump parameter is the pressure curve (&QUOT;pressure&QUOT;) at the nominal mass flow rate (&QUOT;N_nominal&QUOT;). If the electrical power consumption needs to be computed then the electrical power curve (parameter &QUOT;power&QUOT;) or an efficiency curves (parameters &QUOT;hydraulicEfficiency&QUOT; and &QUOT;motorEfficiency&QUOT;) needs to be provided. Parameter &QUOT;use_powerCharacteristic&QUOT; can be used to choose between these two options.</p>
+<h4>Model options</h4>
+<p>If parameter &QUOT;motorCooledByFluid&QUOT; is enabled then electrical losses in the electrical motor (based on &QUOT;motorEfficiency&QUOT;) are added to the fluid stream as heat. </p>
+<p>Similarly flow work is added to the fluid by default. Both these effects can be disabled by setting addPowerToMedium to false.</p>
+<p>By default the rpm setpoint is filtered to increase the model stability and to mimic the inertia of the rotor. The dynamics tab can be used to set the corresponding parameters.</p>
+<p><br><b>Validation</b></p>
+<p>fixme: see wilo pressure curve validation [link]</p>
 </html>",
       revisions="<html>
 <ul>
