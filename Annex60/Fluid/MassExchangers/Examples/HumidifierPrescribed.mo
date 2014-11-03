@@ -4,8 +4,7 @@ model HumidifierPrescribed "Model that demonstrates the ideal humidifier model"
 
   package Medium = Annex60.Media.Air;
 
-  inner Modelica.Fluid.System system
-    annotation (Placement(transformation(extent={{-80,-80},{-60,-60}})));
+
   parameter Modelica.SIunits.MassFlowRate m_flow_nominal=
      3000/1000/20 "Nominal mass flow rate";
 
@@ -15,7 +14,7 @@ model HumidifierPrescribed "Model that demonstrates the ideal humidifier model"
     nPorts=2,
     m_flow=2*m_flow_nominal,
     T=303.15) "Source" annotation (Placement(transformation(extent={{-82,40},{-62,
-            60}}, rotation=0)));
+            60}})));
   Annex60.Fluid.MassExchangers.HumidifierPrescribed humSte(
     redeclare package Medium = Medium,
     m_flow_nominal=m_flow_nominal,
@@ -63,7 +62,7 @@ model HumidifierPrescribed "Model that demonstrates the ideal humidifier model"
     p(displayUnit="Pa"),
     T=303.15,
     nPorts=2) "Sink"   annotation (Placement(transformation(extent={{178,40},{158,
-            60}}, rotation=0)));
+            60}})));
 equation
   connect(senTem1.T, con1.u_m) annotation (Line(
       points={{50,111},{50,138}},
