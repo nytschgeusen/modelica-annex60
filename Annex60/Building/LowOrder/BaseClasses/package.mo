@@ -1,4 +1,8 @@
-within Annex60.Building.LowOrder;
-package BaseClasses "Base classes for the low order VDI 6007 model"
-extends Modelica.Icons.BasesPackage;
+within AixLib.Building.LowOrder;
+package BaseClasses "Sub-models for ThermalZone"
+  extends Modelica.Icons.BasesPackage;
+
+
+annotation (Documentation(info="
+"));
 end BaseClasses;
