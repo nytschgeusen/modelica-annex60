@@ -150,7 +150,8 @@ public
     T(nominal=293.15,
       min=278.15,
       max=323.15),
-    nPorts=1) annotation (Placement(transformation(
+    nPorts=nPorts)
+              annotation (Placement(transformation(
         extent={{-10,-10},{10,10}},
         rotation=0,
         origin={2,-10})));
@@ -251,13 +252,11 @@ if withWindows and withOuterwalls then
       points={{28,0},{20,0},{20,-30},{-12,-30},{-12,-10},{-8,-10}},
       color={191,0,0},
       smooth=Smooth.None));
-  if nPorts>0 then
-    connect(airload.ports, ports) annotation (Line(
-      points={{2,-20},{46,-20},{46,-36},{93,-36}},
+
+  connect(airload.ports, ports) annotation (Line(
+      points={{2,-20},{50,-20},{50,-36},{93,-36}},
       color={0,127,255},
       smooth=Smooth.None));
-  end if;
-
   annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
             -100},{100,100}}),
                       graphics),
