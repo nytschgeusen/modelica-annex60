@@ -1,4 +1,4 @@
-within Annex60.Building.Components.DryAir;
+within AixLib.Building.Components.DryAir;
 model VarAirExchange "Heat flow caused by air exchange"
   extends Modelica.Thermal.HeatTransfer.Interfaces.Element1D;
   parameter Modelica.SIunits.Volume V = 50 "Volume of the room";
@@ -6,10 +6,8 @@ model VarAirExchange "Heat flow caused by air exchange"
     "Specific heat capacity of air";
   parameter Modelica.SIunits.Density rho = 1.25 "Air density";
   Modelica.Blocks.Interfaces.RealInput InPort1 annotation(Placement(transformation(extent = {{-100, -54}, {-80, -74}}, rotation = 0)));
+
 equation
-  if cardinality(InPort1) < 1 then
-    InPort1 = 0;
-  end if;
   port_a.Q_flow = InPort1 * V * c * rho * (port_a.T - port_b.T) / 3600;
   annotation(Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}, grid = {2, 2}), graphics={  Rectangle(extent = {{-80, 60}, {80, -100}}, lineColor = {0, 0, 0}), Rectangle(extent = {{-80, 60}, {80, -100}}, lineColor = {0, 0, 0}), Rectangle(extent = {{-80, 60}, {80, -100}}, lineColor = {0, 0, 0}, fillColor = {211, 243, 255},
             fillPattern =                                                                                                    FillPattern.Solid), Polygon(points = {{60, -58}, {30, -72}, {-22, -68}, {-16, -60}, {-68, -52}, {-30, -80}, {-24, -74}, {46, -74}, {60, -58}}, lineColor = {0, 0, 0}, smooth = Smooth.Bezier, fillColor = {255, 255, 255},
@@ -27,9 +25,10 @@ equation
  <li><i>Mai 19, 2014&nbsp;</i> by Ana Constantin:<br/>Uses components from MSL and respects the naming conventions</li>
  <li><i>May 02, 2013&nbsp;</i> by Ole Odendahl:<br/>Formatted documentation appropriately</li>
  </ul></p>
- </html>"), Diagram(coordinateSystem(preserveAspectRatio = true, extent = {{-100, -100}, {100, 100}}, grid = {2, 2}), graphics={  Rectangle(extent = {{-80, 60}, {80, -100}}, lineColor = {0, 0, 0}), Rectangle(extent = {{-80, 60}, {80, -100}}, lineColor = {0, 0, 0}), Rectangle(extent = {{-80, 60}, {80, -100}}, lineColor = {0, 0, 0}), Rectangle(extent = {{-80, 60}, {80, -100}}, lineColor = {0, 0, 0}, fillColor = {211, 243, 255},
-            fillPattern =                                                                                                    FillPattern.Solid), Polygon(points = {{60, -58}, {30, -72}, {-22, -68}, {-16, -60}, {-68, -52}, {-30, -80}, {-24, -74}, {46, -74}, {60, -58}}, lineColor = {0, 0, 0}, smooth = Smooth.Bezier, fillColor = {255, 255, 255},
-            fillPattern =                                                                                                    FillPattern.Solid), Text(extent = {{-30, 16}, {30, -50}}, lineColor = {0, 0, 0}, fillColor = {255, 255, 255},
-            fillPattern =                                                                                                    FillPattern.Solid, textString = "Air"), Polygon(points = {{-58, 22}, {-28, 36}, {24, 32}, {18, 24}, {70, 16}, {32, 44}, {26, 38}, {-44, 38}, {-58, 22}}, lineColor = {0, 0, 0}, smooth = Smooth.Bezier, fillColor = {255, 255, 255},
-            fillPattern =                                                                                                    FillPattern.Solid)}), DymolaStoredErrors);
+ </html>"), Diagram(coordinateSystem(preserveAspectRatio = true, extent = {{-100, -100}, {100, 100}}, grid = {2, 2}), graphics={  Rectangle(extent=  {{-80, 60}, {80, -100}}, lineColor=  {0, 0, 0}), Rectangle(extent=  {{-80, 60}, {80, -100}}, lineColor=  {0, 0, 0}), Rectangle(extent=  {{-80, 60}, {80, -100}}, lineColor=  {0, 0, 0}), Rectangle(extent=  {{-80, 60}, {80, -100}}, lineColor=  {0, 0, 0}, fillColor=  {211, 243, 255},
+            fillPattern=                                                                                                    FillPattern.Solid), Polygon(points=  {{60, -58}, {30, -72}, {-22, -68}, {-16, -60}, {-68, -52}, {-30, -80}, {-24, -74}, {46, -74}, {60, -58}}, lineColor=  {0, 0, 0}, smooth=  Smooth.Bezier, fillColor=  {255, 255, 255},
+            fillPattern=                                                                                                    FillPattern.Solid), Text(extent=  {{-30, 16}, {30, -50}}, lineColor=  {0, 0, 0}, fillColor=  {255, 255, 255},
+            fillPattern=                                                                                                    FillPattern.Solid, textString=  "Air"), Polygon(points=  {{-58, 22}, {-28, 36}, {24, 32}, {18, 24}, {70, 16}, {32, 44}, {26, 38}, {-44, 38}, {-58, 22}}, lineColor=  {0, 0, 0}, smooth=  Smooth.Bezier, fillColor=  {255, 255, 255},
+            fillPattern=                                                                                                    FillPattern.Solid)}), DymolaStoredErrors);
 end VarAirExchange;
+

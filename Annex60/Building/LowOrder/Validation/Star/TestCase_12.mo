@@ -36,7 +36,7 @@ model TestCase_12
   Modelica.Blocks.Sources.CombiTimeTable innerLoads(extrapolation = Modelica.Blocks.Types.Extrapolation.Periodic, tableOnFile = false, table = [0, 0, 0, 0; 3600, 0, 0, 0; 7200, 0, 0, 0; 10800, 0, 0, 0; 14400, 0, 0, 0; 18000, 0, 0, 0; 21600, 0, 0, 0; 25200, 0, 0, 0; 25200, 80, 80, 200; 28800, 80, 80, 200; 32400, 80, 80, 200; 36000, 80, 80, 200; 39600, 80, 80, 200; 43200, 80, 80, 200; 46800, 80, 80, 200; 50400, 80, 80, 200; 54000, 80, 80, 200; 57600, 80, 80, 200; 61200, 80, 80, 200; 61200, 0, 0, 0; 64800, 0, 0, 0; 72000, 0, 0, 0; 75600, 0, 0, 0; 79200, 0, 0, 0; 82800, 0, 0, 0; 86400, 0, 0, 0], columns = {2, 3, 4}) annotation(Placement(transformation(extent = {{-56, -76}, {-36, -56}})));
 equation
   referenceTemp = reference.y;
-  simulationTemp = reducedModel.airload.port.T;
+  simulationTemp = reducedModel.airload.heatPort.T;
   connect(outdoorTemp.y[1], varTemp.T) annotation(Line(points = {{-39, 28}, {-22, 28}, {-22, 36}, {-4, 36}}, color = {0, 0, 127}, smooth = Smooth.None));
   connect(windowRad.y, Quelle_Fenster.u) annotation(Line(points = {{-61, 82}, {-54, 82}}, color = {0, 0, 127}, smooth = Smooth.None));
   connect(Quelle_Fenster.solarRad_out, sunblind.Rad_In) annotation(Line(points = {{-35, 82}, {-23, 82}}, color = {255, 128, 0}, smooth = Smooth.None));
@@ -44,9 +44,12 @@ equation
   connect(sunblind.Rad_Out, rad_weighted_sum.solarRad_in) annotation(Line(points = {{-5, 82}, {5, 82}}, color = {255, 128, 0}, smooth = Smooth.None));
   connect(rad_weighted_sum.solarRad_out, reducedModel.solarRad_in) annotation(Line(points={{23,82},
           {32,82},{32,69},{64.2,69}},                                                                                                    color = {255, 128, 0}, smooth = Smooth.None));
-  connect(HeatTorStar.Star, reducedModel.internalGainsRad) annotation(Line(points = {{67.1, -94}, {84, -94}, {84, 34}, {84.09, 34}}, color = {95, 95, 95}, pattern = LinePattern.None, smooth = Smooth.None));
-  connect(personsConvective.port, reducedModel.internalGainsConv) annotation(Line(points = {{32, -66}, {74.4, -66}, {74.4, 34}}, color = {191, 0, 0}, smooth = Smooth.None));
-  connect(machinesConvective.port, reducedModel.internalGainsConv) annotation(Line(points = {{32, -46}, {74.4, -46}, {74.4, 34}}, color = {191, 0, 0}, smooth = Smooth.None));
+  connect(HeatTorStar.Star, reducedModel.internalGainsRad) annotation(Line(points={{67.1,
+          -94},{84,-94},{84,32},{83.75,32}},                                                                                         color = {95, 95, 95}, pattern = LinePattern.None, smooth = Smooth.None));
+  connect(personsConvective.port, reducedModel.internalGainsConv) annotation(Line(points={{32,-66},
+          {74.4,-66},{74.4,32}},                                                                                                 color = {191, 0, 0}, smooth = Smooth.None));
+  connect(machinesConvective.port, reducedModel.internalGainsConv) annotation(Line(points={{32,-46},
+          {74.4,-46},{74.4,32}},                                                                                                  color = {191, 0, 0}, smooth = Smooth.None));
   connect(innerLoads.y[3], machinesConvective.Q_flow) annotation(Line(points = {{-35, -66}, {-16, -66}, {-16, -46}, {12, -46}}, color = {0, 0, 127}, smooth = Smooth.None));
   connect(innerLoads.y[2], personsConvective.Q_flow) annotation(Line(points = {{-35, -66}, {12, -66}}, color = {0, 0, 127}, smooth = Smooth.None));
   connect(innerLoads.y[1], personsRadiative.Q_flow) annotation(Line(points = {{-35, -66}, {-16, -66}, {-16, -94}, {12, -94}}, color = {0, 0, 127}, smooth = Smooth.None));
@@ -58,7 +61,7 @@ equation
       smooth=Smooth.None));
   connect(ventitaltionRate.y[1], reducedModel.ventilationRate) annotation (
       Line(
-      points={{-39,-6},{10,-6},{10,-4},{64.2,-4},{64.2,34}},
+      points={{-39,-6},{10,-6},{10,-4},{64.54,-4},{64.54,32}},
       color={0,0,127},
       smooth=Smooth.None));
   annotation(Diagram(coordinateSystem(preserveAspectRatio=false,   extent={{-100,

@@ -35,12 +35,15 @@ equation
   connect(machinesRadiative.port, HeatToStar.Therm) annotation(Line(points = {{22, -89}, {28, -89}, {28, -88}, {40.8, -88}}, color = {191, 0, 0}, smooth = Smooth.None));
   connect(innerLoads.y[2], machinesRadiative.Q_flow) annotation(Line(points = {{-27, -88}, {-16, -88}, {-16, -89}, {-4, -89}}, color = {0, 0, 127}, smooth = Smooth.None));
   connect(infiltrationTemp.y, reducedModel.ventilationTemperature) annotation(Line(points = {{16.5, 1}, {21.25, 1}, {21.25, 36.4}, {57.4, 36.4}}, color = {0, 0, 127}, smooth = Smooth.None));
-  connect(infiltrationRate.y, reducedModel.ventilationRate) annotation(Line(points = {{40.5, 1}, {40.5, 13.5}, {64.2, 13.5}, {64.2, 30}}, color = {0, 0, 127}, smooth = Smooth.None));
-  connect(HeatToStar.Star, reducedModel.internalGainsRad) annotation(Line(points = {{59.1, -88}, {84.09, -88}, {84.09, 30}}, color = {95, 95, 95}, pattern = LinePattern.None, smooth = Smooth.None));
+  connect(infiltrationRate.y, reducedModel.ventilationRate) annotation(Line(points={{40.5,1},
+          {40.5,13.5},{64.54,13.5},{64.54,28}},                                                                                           color = {0, 0, 127}, smooth = Smooth.None));
+  connect(HeatToStar.Star, reducedModel.internalGainsRad) annotation(Line(points={{59.1,
+          -88},{83.75,-88},{83.75,28}},                                                                                      color = {95, 95, 95}, pattern = LinePattern.None, smooth = Smooth.None));
   connect(outdoorTemp.port, reducedModel.equalAirTemp) annotation(Line(points = {{-4, 49}, {26.5, 49}, {26.5, 46.8}, {57.4, 46.8}}, color = {191, 0, 0}, smooth = Smooth.None));
   connect(heatFlowSensor.port_a, varTemp.port) annotation(Line(points = {{24, -28}, {14, -28}}, color = {191, 0, 0}, smooth = Smooth.None));
   connect(setTemp.y[1], varTemp.T) annotation(Line(points = {{-41, -28}, {-8, -28}}, color = {0, 0, 127}, smooth = Smooth.None));
-  connect(heatFlowSensor.port_b, reducedModel.internalGainsConv) annotation(Line(points = {{44, -28}, {74.4, -28}, {74.4, 30}}, color = {191, 0, 0}, smooth = Smooth.None));
+  connect(heatFlowSensor.port_b, reducedModel.internalGainsConv) annotation(Line(points={{44,-28},
+          {74.4,-28},{74.4,28}},                                                                                                color = {191, 0, 0}, smooth = Smooth.None));
   annotation(Diagram(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics), experiment(StopTime = 5.184e+006, Interval = 3600, __Dymola_Algorithm = "Lsodar"), __Dymola_experimentSetupOutput(events = false), Documentation(revisions = "<html>
  <p><i>February 2014</i>, by Peter Remmen:</p><p>Implemented</p>
  </html>", info = "<html>

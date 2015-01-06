@@ -53,10 +53,6 @@ equation
       points={{-56,47},{-52,47},{-52,37},{-48,37}},
       color={191,0,0},
       smooth=Smooth.None));
-  connect(heatConvWinRes.port_b, airload.port) annotation (Line(
-      points={{-38,37},{-7,37},{-7,0}},
-      color={191,0,0},
-      smooth=Smooth.None));
   connect(solarRadToHeatWindowRad.heatPort, splitterThermPercentAir.signalInput)
     annotation (Line(
       points={{-27,90},{-14,90}},
@@ -112,6 +108,10 @@ equation
   connect(splitterThermPercentAir.signalOutput[1], outerwall.port_b)
     annotation (Line(
       points={{6,90},{6,30},{-50,30},{-50,-0.909091}},
+      color={191,0,0},
+      smooth=Smooth.None));
+  connect(heatConvWinRes.port_b, airload.heatPort) annotation (Line(
+      points={{-38,37},{-26,37},{-26,38},{-12,38},{-12,-10},{-8,-10}},
       color={191,0,0},
       smooth=Smooth.None));
   annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},

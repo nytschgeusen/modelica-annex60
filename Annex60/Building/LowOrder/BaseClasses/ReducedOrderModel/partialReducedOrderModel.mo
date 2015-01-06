@@ -1,4 +1,4 @@
-within AixLib.Building.LowOrder.BaseClasses.ReducedOrderModel;
+within Annex60.Building.LowOrder.BaseClasses.ReducedOrderModel;
 partial model partialReducedOrderModel
 
  parameter Boolean withInnerwalls=true "If inner walls are existent"   annotation(Dialog(tab="Inner walls"),choices(checkBox = true));
@@ -52,19 +52,9 @@ partial model partialReducedOrderModel
   parameter Modelica.SIunits.Emissivity epso=0.95
     "Emissivity of the outer walls"
     annotation(Dialog(tab="Outer walls",enable = if withOuterwalls then true else false));
+  parameter Integer nPorts=0 "Number of ports"
+    annotation(Evaluate=true, Dialog(connectorSizing=true, tab="General",group="Ports"));
 
-  Building.Components.DryAir.Airload
-                       airload(
-    V=Vair,
-    rho=rhoair,
-    c=cair,
-    T(nominal=293.15,
-      min=278.15,
-      max=323.15))
-            annotation (Placement(transformation(
-        extent={{-10,-10},{10,10}},
-        rotation=0,
-        origin={2,2})));
   Utilities.HeatTransfer.HeatConv
                              heatConvInnerwall(A=Ai, alpha=alphaiwi) if withInnerwalls
     annotation (Placement(transformation(extent={{28,-10},{48,10}})));
@@ -153,6 +143,26 @@ public
         extent={{-8,-8},{8,8}},
         rotation=90,
         origin={-68,-42})));
+  Fluid.MixingVolumes.MixingVolume airload(
+    V=Vair,
+    m_flow_nominal=0,
+    redeclare package Medium = Modelica.Media.Air.SimpleAir,
+    T(nominal=293.15,
+      min=278.15,
+      max=323.15),
+    nPorts=1) annotation (Placement(transformation(
+        extent={{-10,-10},{10,10}},
+        rotation=0,
+        origin={2,-10})));
+  Modelica.Fluid.Vessels.BaseClasses.VesselFluidPorts_b ports[nPorts](
+      redeclare package Medium = Modelica.Media.Air.SimpleAir) annotation (
+      Placement(transformation(
+        extent={{-45,-12},{45,12}},
+        rotation=90,
+        origin={93,-36}), iconTransformation(
+        extent={{-30.5,-8},{30.5,8}},
+        rotation=90,
+        origin={108,0.5})));
 initial equation
   assert(noEvent((abs(Aw) < 0.00001 and withWindows)==false),"In ReducedModel, withWindows is true (windows existent), but the area of the windows Aw is zero (or nearly zero). This might cause an error.", level=AssertionLevel.warning);
   assert(noEvent((abs(Ao) < 0.00001 and withOuterwalls)==false),"In ReducedModel, withOuterwalls is true (outer walls existent), but the area of the outer walls Ao is zero (or nearly zero). This might cause an error.", level=AssertionLevel.warning);
@@ -195,10 +205,6 @@ if withWindows and withOuterwalls then
         points={{-50,-0.909091},{-46.5,-0.909091},{-46.5,0},{-42,0}},
         color={191,0,0},
         smooth=Smooth.None));
-    connect(heatConvOuterwall.port_a, airload.port) annotation (Line(
-        points={{-22,0},{-7,0}},
-        color={191,0,0},
-        smooth=Smooth.None));
     if withInnerwalls then
     else
     end if;
@@ -211,24 +217,6 @@ if withWindows and withOuterwalls then
         smooth=Smooth.None));
   end if;
 
-  connect(airExchange.port_b, airload.port)                  annotation (
-      Line(
-      points={{-24,-30},{-16,-30},{-16,0},{-7,0}},
-      color={191,0,0},
-      smooth=Smooth.None));
-
-  connect(internalGainsConv, airload.port) annotation (Line(
-      points={{20,-90},{20,-30},{-16,-30},{-16,0},{-7,0}},
-      color={191,0,0},
-      smooth=Smooth.None));
-  connect(airload.port, heatConvInnerwall.port_a) annotation (Line(
-      points={{-7,0},{-16,0},{-16,-30},{20,-30},{20,0},{28,0}},
-      color={191,0,0},
-      smooth=Smooth.None));
-  connect(solarRadToHeatWindowConv.heatPort, airload.port) annotation (Line(
-      points={{-27,66},{-16,66},{-16,0},{-7,0}},
-      color={191,0,0},
-      smooth=Smooth.None));
   connect(ventilationTemperature, ventilationTemperatureConverter.T)
     annotation (Line(
       points={{-100,-62},{-68,-62},{-68,-51.6}},
@@ -243,13 +231,39 @@ if withWindows and withOuterwalls then
       points={{-40,-100},{-40,-50},{-50,-50},{-50,-36.4},{-43,-36.4}},
       color={0,0,127},
       smooth=Smooth.None));
+  connect(solarRadToHeatWindowConv.heatPort, airload.heatPort) annotation (Line(
+      points={{-27,66},{-12,66},{-12,-10},{-8,-10}},
+      color={191,0,0},
+      smooth=Smooth.None));
+  connect(heatConvOuterwall.port_a, airload.heatPort) annotation (Line(
+      points={{-22,0},{-16,0},{-16,-10},{-8,-10}},
+      color={191,0,0},
+      smooth=Smooth.None));
+  connect(internalGainsConv, airload.heatPort) annotation (Line(
+      points={{20,-90},{20,-30},{-12,-30},{-12,-10},{-8,-10}},
+      color={191,0,0},
+      smooth=Smooth.None));
+  connect(airExchange.port_b, airload.heatPort) annotation (Line(
+      points={{-24,-30},{-12,-30},{-12,-10},{-8,-10}},
+      color={191,0,0},
+      smooth=Smooth.None));
+  connect(heatConvInnerwall.port_a, airload.heatPort) annotation (Line(
+      points={{28,0},{20,0},{20,-30},{-12,-30},{-12,-10},{-8,-10}},
+      color={191,0,0},
+      smooth=Smooth.None));
+  if nPorts>0 then
+    connect(airload.ports, ports) annotation (Line(
+      points={{2,-20},{46,-20},{46,-36},{93,-36}},
+      color={0,127,255},
+      smooth=Smooth.None));
+  end if;
+
   annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
             -100},{100,100}}),
                       graphics),
     experiment(StopTime=864000),
     experimentSetupOutput,
-    Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{100,
-            100}}),
+    Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{100,100}}),
          graphics={
         Rectangle(
           extent={{-60,74},{100,-70}},

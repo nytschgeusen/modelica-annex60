@@ -27,7 +27,7 @@ model TestCase_10
   Modelica.Blocks.Sources.CombiTimeTable innerLoads(extrapolation = Modelica.Blocks.Types.Extrapolation.Periodic, tableOnFile = false, table = [0, 0, 0, 0; 3600, 0, 0, 0; 7200, 0, 0, 0; 10800, 0, 0, 0; 14400, 0, 0, 0; 18000, 0, 0, 0; 21600, 0, 0, 0; 25200, 0, 0, 0; 25200, 80, 80, 200; 28800, 80, 80, 200; 32400, 80, 80, 200; 36000, 80, 80, 200; 39600, 80, 80, 200; 43200, 80, 80, 200; 46800, 80, 80, 200; 50400, 80, 80, 200; 54000, 80, 80, 200; 57600, 80, 80, 200; 61200, 80, 80, 200; 61200, 0, 0, 0; 64800, 0, 0, 0; 72000, 0, 0, 0; 75600, 0, 0, 0; 79200, 0, 0, 0; 82800, 0, 0, 0; 86400, 0, 0, 0], columns = {2, 3, 4}) annotation(Placement(transformation(extent = {{-48, -72}, {-28, -52}})));
 equation
   referenceTemp = reference.y;
-  simulationTemp = reducedModel.airload.port.T;
+  simulationTemp = reducedModel.airload.heatPort.T;
   connect(windowRad.y, Quelle_Fenster.u) annotation(Line(points = {{-65, 82}, {-50, 82}}, color = {0, 0, 127}, smooth = Smooth.None));
   connect(Quelle_Fenster.solarRad_out, sunblind.Rad_In) annotation(Line(points = {{-31, 82}, {-19, 82}}, color = {255, 128, 0}, smooth = Smooth.None));
   connect(multiplex5_1.y, Quelle_Wand.u) annotation(Line(points = {{-63, 54}, {-58, 54}}, color = {0, 0, 127}, smooth = Smooth.None));
@@ -37,14 +37,18 @@ equation
   connect(wallRad.y, multiplex5_1.u4[1]) annotation(Line(points = {{-115.5, 55}, {-104, 55}, {-104, 49}, {-86, 49}}, color = {0, 0, 127}, smooth = Smooth.None));
   connect(sunblind.sunblindonoff, eqAirTemp_TestCase_8_1.sunblindsig) annotation(Line(points = {{-10, 72}, {-10, 60}, {-26, 60}, {-26, 48}}, color = {0, 0, 127}, smooth = Smooth.None));
   connect(infiltrationTemp.y, reducedModel.ventilationTemperature) annotation(Line(points = {{26.5, 5}, {34, 5}, {34, 55}, {54.8, 55}}, color = {0, 0, 127}, smooth = Smooth.None));
-  connect(infiltrationRate.y, reducedModel.ventilationRate) annotation(Line(points = {{50.5, 5}, {64.4, 5}, {64.4, 47}}, color = {0, 0, 127}, smooth = Smooth.None));
+  connect(infiltrationRate.y, reducedModel.ventilationRate) annotation(Line(points={{50.5,5},
+          {64.88,5},{64.88,44.5}},                                                                                       color = {0, 0, 127}, smooth = Smooth.None));
   connect(rad_weighted_sum.solarRad_out, reducedModel.solarRad_in) annotation(Line(points={{27,82},
           {42,82},{42,90.75},{64.4,90.75}},                                                                                                  color = {255, 128, 0}, smooth = Smooth.None));
   connect(sunblind.Rad_Out, rad_weighted_sum.solarRad_in) annotation(Line(points = {{-1, 82}, {9, 82}}, color = {255, 128, 0}, smooth = Smooth.None));
   connect(wallRad.y, multiplex5_1.u5[1]) annotation(Line(points = {{-115.5, 55}, {-104.75, 55}, {-104.75, 44}, {-86, 44}}, color = {0, 0, 127}, smooth = Smooth.None));
-  connect(HeatTorStar.Star, reducedModel.internalGainsRad) annotation(Line(points = {{75.1, -90}, {92, -90}, {92, 47}, {92.48, 47}}, color = {95, 95, 95}, pattern = LinePattern.None, smooth = Smooth.None));
-  connect(personsConvective.port, reducedModel.internalGainsConv) annotation(Line(points = {{40, -62}, {78.8, -62}, {78.8, 47}}, color = {191, 0, 0}, smooth = Smooth.None));
-  connect(machinesConvective.port, reducedModel.internalGainsConv) annotation(Line(points = {{40, -42}, {78.8, -42}, {78.8, 47}}, color = {191, 0, 0}, smooth = Smooth.None));
+  connect(HeatTorStar.Star, reducedModel.internalGainsRad) annotation(Line(points={{75.1,
+          -90},{92,-90},{92,44.5},{92,44.5}},                                                                                        color = {95, 95, 95}, pattern = LinePattern.None, smooth = Smooth.None));
+  connect(personsConvective.port, reducedModel.internalGainsConv) annotation(Line(points={{40,-62},
+          {78.8,-62},{78.8,44.5}},                                                                                               color = {191, 0, 0}, smooth = Smooth.None));
+  connect(machinesConvective.port, reducedModel.internalGainsConv) annotation(Line(points={{40,-42},
+          {78.8,-42},{78.8,44.5}},                                                                                                color = {191, 0, 0}, smooth = Smooth.None));
   connect(innerLoads.y[3], machinesConvective.Q_flow) annotation(Line(points = {{-27, -62}, {-8, -62}, {-8, -42}, {20, -42}}, color = {0, 0, 127}, smooth = Smooth.None));
   connect(innerLoads.y[2], personsConvective.Q_flow) annotation(Line(points = {{-27, -62}, {20, -62}}, color = {0, 0, 127}, smooth = Smooth.None));
   connect(innerLoads.y[1], personsRadiative.Q_flow) annotation(Line(points = {{-27, -62}, {-8, -62}, {-8, -90}, {20, -90}}, color = {0, 0, 127}, smooth = Smooth.None));
@@ -60,7 +64,7 @@ equation
       smooth=Smooth.None));
   connect(eqAirTemp_TestCase_8_1.equalAirTemp, reducedModel.equalAirTemp)
     annotation (Line(
-      points={{-18,34.4},{0,34.4},{0,34},{20,34},{20,68},{54.8,68}},
+      points={{-16.2,34.4},{0,34.4},{0,34},{20,34},{20,68},{54.8,68}},
       color={191,0,0},
       smooth=Smooth.None));
   annotation(Diagram(coordinateSystem(preserveAspectRatio=false,   extent={{-100,
