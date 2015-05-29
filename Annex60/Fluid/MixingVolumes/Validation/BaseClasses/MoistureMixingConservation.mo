@@ -1,19 +1,19 @@
-within Annex60.Fluid.MixingVolumes.Validation;
+within Annex60.Fluid.MixingVolumes.Validation.BaseClasses;
 model MoistureMixingConservation
   "This test checks if mass and energy is conserved when mixing fluid streams"
   extends Modelica.Icons.Example;
   package Medium = Annex60.Media.Air;
-  Annex60.Fluid.Sources.MassFlowSource_h source1(
+  Annex60.Fluid.Sources.MassFlowSource_h sou1(
     redeclare package Medium = Medium,
     nPorts=1,
     m_flow=2,
-    X={mWatFloSol.k,1 - mWatFloSol.k}) "Air source"
-    annotation (Placement(transformation(extent={{-100,38},{-80,18}})));
+    X={0,1}) "Air source"
+    annotation (Placement(transformation(extent={{-100,40},{-80,20}})));
   Annex60.Fluid.Sources.MassFlowSource_h sou2(
     redeclare package Medium = Medium,
     nPorts=1,
     m_flow=1,
-    X={mWatFloSol.k,1 - mWatFloSol.k}) "Air source"
+    X={0,1}) "Air source"
     annotation (Placement(transformation(extent={{-100,-30},{-80,-50}})));
   Annex60.Fluid.MixingVolumes.MixingVolumeMoistAir vol(
     redeclare package Medium = Medium,
@@ -24,7 +24,7 @@ model MoistureMixingConservation
     allowFlowReversal=false,
     energyDynamics=Modelica.Fluid.Types.Dynamics.SteadyState)
     "Mixing volume for adding moisture"
-              annotation (Placement(transformation(extent={{-60,28},{-40,48}})));
+              annotation (Placement(transformation(extent={{-60,30},{-40,50}})));
   Annex60.Fluid.MixingVolumes.MixingVolumeMoistAir vol1(
     redeclare package Medium = Medium,
     massDynamics=Modelica.Fluid.Types.Dynamics.SteadyState,
@@ -37,7 +37,7 @@ model MoistureMixingConservation
               annotation (Placement(transformation(extent={{-60,-40},{-40,-20}})));
   Annex60.Fluid.Sources.Boundary_pT sin(redeclare package Medium = Medium,
       nPorts=1) "Air sink"
-    annotation (Placement(transformation(extent={{120,-10},{100,10}})));
+    annotation (Placement(transformation(extent={{100,20},{80,40}})));
   Annex60.Fluid.MixingVolumes.MixingVolumeMoistAir vol2(
     redeclare package Medium = Medium,
     massDynamics=Modelica.Fluid.Types.Dynamics.SteadyState,
@@ -47,58 +47,58 @@ model MoistureMixingConservation
     allowFlowReversal=false,
     energyDynamics=Modelica.Fluid.Types.Dynamics.SteadyState)
     "Mixing volume for removing moisture"
-              annotation (Placement(transformation(extent={{-6,0},{14,20}})));
+              annotation (Placement(transformation(extent={{-10,30},{10,50}})));
   Modelica.Blocks.Sources.Constant mWatFlo1(k=0.001) "Water mass flow rate 1"
-    annotation (Placement(transformation(extent={{-100,50},{-90,60}})));
+    annotation (Placement(transformation(extent={{-100,52},{-84,68}})));
   Modelica.Blocks.Sources.Constant TWat(k=273.15) "Watter supply temperature"
-    annotation (Placement(transformation(extent={{-100,80},{-80,100}})));
+    annotation (Placement(transformation(extent={{-100,82},{-84,98}})));
   Modelica.Blocks.Sources.Constant mWatFlo3(k=-(mWatFlo1.k + mWatFlo2.k))
     "Withdrawn moisture rate"
-    annotation (Placement(transformation(extent={{-40,50},{-30,60}})));
+    annotation (Placement(transformation(extent={{-40,52},{-24,68}})));
   Modelica.Blocks.Sources.Constant mWatFlo2(k=0.003) "Water mass flow rate 2"
-    annotation (Placement(transformation(extent={{-100,-20},{-88,-8}})));
-  Annex60.Utilities.Diagnostics.AssertEquality assertEqualityMoisture(threShold=
-       1E-10, message="Water vapor mass is not conserved")
-    annotation (Placement(transformation(extent={{84,-24},{98,-38}})));
+    annotation (Placement(transformation(extent={{-100,-18},{-84,-2}})));
+  Annex60.Utilities.Diagnostics.AssertEquality assMasFra(
+      message="Water vapor mass is not conserved", threShold=1E-8)
+    "Assert for checking moisture conservation"
+    annotation (Placement(transformation(extent={{84,-22},{98,-36}})));
   Annex60.Fluid.Sensors.MassFractionTwoPort senMasFra(
     redeclare package Medium = Medium,
     m_flow_nominal=1,
     tau=0,
     allowFlowReversal=false) "Sensor for measuring moisture"
-    annotation (Placement(transformation(extent={{70,10},{90,-10}})));
-protected
-  Modelica.Fluid.Interfaces.FluidPort_a port_a(redeclare package Medium =
-        Medium) "Fluid port for using fluid stream mixing implementation"
-    annotation (Placement(transformation(extent={{-30,-10},{-10,10}})));
-         // fixme list all public instances prior to protected
-public
-  Modelica.Blocks.Sources.Constant mWatFloSol(k=0.01)
-    "Solution mass fraction water"
-    annotation (Placement(transformation(extent={{60,-40},{70,-30}})));
+    annotation (Placement(transformation(extent={{58,40},{78,20}})));
+
+  Modelica.Blocks.Sources.Constant mWatFloSol "Solution mass fraction water"
+    annotation (Placement(transformation(extent={{60,-38},{70,-28}})));
   Annex60.Fluid.Sensors.MassFlowRate senMasFlo(redeclare package Medium =
         Medium, allowFlowReversal=false) "Mass flow rate sensor"
-    annotation (Placement(transformation(extent={{44,10},{64,-10}})));
-  Annex60.Utilities.Diagnostics.AssertEquality assertEquality1(threShold=1E-10,
-      message="Water vapor mass is not conserved")
-    annotation (Placement(transformation(extent={{84,-44},{98,-58}})));
-  Modelica.Blocks.Sources.Constant mFloSol(k=sou1.m_flow + sou2.m_flow)
-    "Solution mass flow rate"
-    annotation (Placement(transformation(extent={{60,-60},{70,-50}})));
-  Annex60.Fluid.Sensors.SpecificEnthalpyTwoPort senSpeEnt(
+    annotation (Placement(transformation(extent={{34,40},{54,20}})));
+  Annex60.Utilities.Diagnostics.AssertEquality assMasFlo(
+                                                   threShold=1E-8, message="Total air mass is not conserved")
+    "Assert for checking conservation of mass"
+    annotation (Placement(transformation(extent={{84,-52},{98,-66}})));
+  Modelica.Blocks.Sources.Constant mFloSol "Solution mass flow rate"
+    annotation (Placement(transformation(extent={{60,-68},{70,-58}})));
+  Sensors.EnthalpyFlowRate                      senSpeEnt(
     redeclare package Medium = Medium,
     allowFlowReversal=false,
     m_flow_nominal=1,
     tau=0) "Specific enthalpy flow rate sensor"
-    annotation (Placement(transformation(extent={{20,10},{40,-10}})));
-  Annex60.Utilities.Diagnostics.AssertEquality assertEquality2(message="Water vapor mass is not conserved",
-      threShold=1E-5)
-    annotation (Placement(transformation(extent={{84,-64},{98,-78}})));
-  Modelica.Blocks.Sources.Constant hSol(k=Medium.h_default)
-    "Solution mass flow rate"
-    annotation (Placement(transformation(extent={{60,-80},{70,-70}})));
+    annotation (Placement(transformation(extent={{10,40},{30,20}})));
+  Annex60.Utilities.Diagnostics.AssertEquality assSpeEnt(
+                                             threShold=1E-5, message="Enthalpy is not conserved")
+    "Assert for checking conservation of energy"
+    annotation (Placement(transformation(extent={{84,-84},{98,-98}})));
+  Modelica.Blocks.Sources.Constant hSol "Solution mass flow rate"
+    annotation (Placement(transformation(extent={{60,-100},{70,-90}})));
+
+protected
+  Modelica.Fluid.Interfaces.FluidPort_a port_a(redeclare package Medium =
+        Medium) "Fluid port for using fluid stream mixing implementation"
+    annotation (Placement(transformation(extent={{-30,20},{-10,40}})));
 equation
   connect(sou1.ports[1], vol.ports[1]) annotation (Line(
-      points={{-80,28},{-52,28}},
+      points={{-80,30},{-52,30}},
       color={0,127,255},
       smooth=Smooth.None));
   connect(sou2.ports[1], vol1.ports[1]) annotation (Line(
@@ -106,80 +106,68 @@ equation
       color={0,127,255},
       smooth=Smooth.None));
   connect(mWatFlo1.y, vol.mWat_flow) annotation (Line(
-      points={{-89.5,55},{-62,55},{-62,46}},
+      points={{-83.2,60},{-62,60},{-62,48}},
       color={0,0,127},
       smooth=Smooth.None));
   connect(vol1.TWat,TWat. y) annotation (Line(
-      points={{-62,-25.2},{-68,-25.2},{-68,90},{-79,90}},
+      points={{-62,-25.2},{-62,90},{-83.2,90}},
       color={0,0,127},
       smooth=Smooth.None));
   connect(vol.TWat,TWat. y) annotation (Line(
-      points={{-62,42.8},{-66,42.8},{-66,42},{-68,42},{-68,90},{-79,90}},
+      points={{-62,44.8},{-60,44.8},{-60,42},{-62,42},{-62,90},{-83.2,90}},
       color={0,0,127},
       smooth=Smooth.None));
   connect(mWatFlo3.y, vol2.mWat_flow) annotation (Line(
-      points={{-29.5,55},{-8,55},{-8,18}},
+      points={{-23.2,60},{-12,60},{-12,48}},
       color={0,0,127},
       smooth=Smooth.None));
   connect(vol2.TWat,TWat. y) annotation (Line(
-      points={{-8,14.8},{-6,14.8},{-6,90},{-79,90}},
+      points={{-12,44.8},{-12,90},{-83.2,90}},
       color={0,0,127},
       smooth=Smooth.None));
   connect(mWatFlo2.y, vol1.mWat_flow) annotation (Line(
-      points={{-87.4,-14},{-64,-14},{-64,-22},{-62,-22}},
+      points={{-83.2,-10},{-62,-10},{-62,-22}},
       color={0,0,127},
       smooth=Smooth.None));
   connect(vol1.ports[2], port_a) annotation (Line(
-      points={{-48,-40},{-20,-40},{-20,0}},
+      points={{-48,-40},{-20,-40},{-20,30}},
       color={0,127,255},
       smooth=Smooth.None));
   connect(vol.ports[2], port_a) annotation (Line(
-      points={{-48,28},{-20,28},{-20,0}},
+      points={{-48,30},{-20,30}},
       color={0,127,255},
       smooth=Smooth.None));
   connect(port_a, vol2.ports[1]) annotation (Line(
-      points={{-20,0},{2,0}},
+      points={{-20,30},{-2,30}},
       color={0,127,255},
       smooth=Smooth.None));
-  connect(senMasFra.port_b,sin. ports[1]) annotation (Line(
-      points={{90,0},{100,0}},
-      color={0,127,255},
-      smooth=Smooth.None));
-  connect(mWatFloSol.y, assertEqualityMoisture.u1) annotation (Line(
-      points={{70.5,-35},{74,-35},{74,-35.2},{82.6,-35.2}},
+  connect(mWatFloSol.y, assMasFra.u1) annotation (Line(
+      points={{70.5,-33},{74,-33},{74,-33.2},{82.6,-33.2}},
       color={0,0,127},
       smooth=Smooth.None));
   connect(senMasFlo.port_b, senMasFra.port_a) annotation (Line(
-      points={{64,0},{70,0}},
+      points={{54,30},{58,30}},
       color={0,127,255},
       smooth=Smooth.None));
-  connect(senMasFlo.m_flow, assertEquality1.u2) annotation (Line(
-      points={{54,-11},{54,-46.8},{82.6,-46.8}},
-      color={0,0,127},
-      smooth=Smooth.None));
   connect(vol2.ports[2], senSpeEnt.port_a) annotation (Line(
-      points={{6,0},{20,0}},
+      points={{2,30},{10,30}},
       color={0,127,255},
       smooth=Smooth.None));
   connect(senSpeEnt.port_b, senMasFlo.port_a) annotation (Line(
-      points={{40,0},{44,0}},
+      points={{30,30},{34,30}},
       color={0,127,255},
       smooth=Smooth.None));
-  connect(senSpeEnt.h_out, assertEquality2.u2) annotation (Line(
-      points={{30,-11},{30,-66.8},{82.6,-66.8}},
+  connect(hSol.y, assSpeEnt.u1) annotation (Line(
+      points={{70.5,-95},{74,-95},{74,-95.2},{82.6,-95.2}},
       color={0,0,127},
       smooth=Smooth.None));
-  connect(hSol.y, assertEquality2.u1) annotation (Line(
-      points={{70.5,-75},{74,-75},{74,-75.2},{82.6,-75.2}},
+  connect(mFloSol.y, assMasFlo.u1) annotation (Line(
+      points={{70.5,-63},{76.25,-63},{76.25,-63.2},{82.6,-63.2}},
       color={0,0,127},
       smooth=Smooth.None));
-  connect(mFloSol.y, assertEquality1.u1) annotation (Line(
-      points={{70.5,-55},{76.25,-55},{76.25,-55.2},{82.6,-55.2}},
-      color={0,0,127},
-      smooth=Smooth.None));
-  connect(assertEqualityMoisture.u2, senMasFra.X) annotation (Line(
-      points={{82.6,-26.8},{80,-26.8},{80,-11}},
-      color={0,0,127},
+  connect(senMasFra.port_b, sin.ports[1]) annotation (Line(
+      points={{78,30},{80,30}},
+      color={0,127,255},
       smooth=Smooth.None));
   annotation (                   Diagram(coordinateSystem(preserveAspectRatio=false,
           extent={{-100,-100},{100,100}}), graphics),
@@ -187,7 +175,7 @@ equation
     __Dymola_experimentSetupOutput,
     Documentation(info="<html>
 <p>
-This test checks if water vapor mass is conserved. 
+This test checks if water vapour mass is conserved. 
 Two air streams with different mass flow rate are humidified 
 by a mixing volume with two different vapor mass flow rates. 
 These flows are then mixed. 
