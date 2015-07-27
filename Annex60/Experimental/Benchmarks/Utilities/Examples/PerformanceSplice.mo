@@ -16,7 +16,6 @@ equation
     out[i] = Modelica.Media.Air.MoistAir.Utilities.spliceFunction(pos=1, neg=-1, x=sine[i].y, deltax=1e-5);
   end for;
   annotation (experiment(StopTime=10000, Interval=1),
-      __Dymola_experimentSetupOutput,
     Documentation(info="<html>
 <p>This benchmark tests the computation time of using 
 <a href=\"modelica://Modelica.Media.Air.MoistAir.Utilities.spliceFunction\">
