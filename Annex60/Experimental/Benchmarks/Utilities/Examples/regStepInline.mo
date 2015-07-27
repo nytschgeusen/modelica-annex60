@@ -1,5 +1,5 @@
 within Annex60.Experimental.Benchmarks.Utilities.Examples;
-function regStep
+function regStepInline
   "Approximation of a general step, such that the characteristic is continuous and differentiable"
   extends Modelica.Icons.Function;
   input Real x "Abscissa value";
@@ -44,4 +44,4 @@ In the region -x_small &lt; x &lt; x_small a 2nd order polynomial is used
 for a smooth transition from y1 to y2.
 </p>
 </html>"));
-end regStep;
+end regStepInline;

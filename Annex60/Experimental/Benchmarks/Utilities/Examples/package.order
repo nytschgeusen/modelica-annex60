@@ -1,4 +1,6 @@
 PerformanceRegStep
 PerformanceSplice
-regStep
-spliceFunction
+regStepInline
+spliceFunctionInline
+PerformanceRegStepInline
+PerformanceSpliceInline
