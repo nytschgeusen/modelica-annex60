@@ -1,4 +1,4 @@
-within Annex60.Experimental.Benchmarks.Utilities.Examples;
+within Annex60.Experimental.Benchmarks.Utilities.FunctionsInlined;
 function spliceFunctionInline "Spline interpolation of two functions"
   extends Modelica.Icons.Function;
   input Real pos "Returned value for x-deltax >= 0";
@@ -21,6 +21,7 @@ algorithm
     y := (Modelica.Math.tanh(Modelica.Math.tan(scaledX)) + 1)/2;
   end if;
   out := pos*y + (1 - y)*neg;
-  annotation (inline = true,
+
+  annotation (Inline = true,
               derivative=Modelica.Media.Air.MoistAir.Utilities.spliceFunction_der);
 end spliceFunctionInline;

@@ -13,7 +13,8 @@ model PerformanceRegStepInline
 
 equation
   for i in 1:nPar loop
-    out[i] =Annex60.Experimental.Benchmarks.Utilities.Examples.regStepInline(
+    out[i] =
+      Annex60.Experimental.Benchmarks.Utilities.FunctionsInlined.regStepInline(
       sine[i].y,
       1,
       -1,

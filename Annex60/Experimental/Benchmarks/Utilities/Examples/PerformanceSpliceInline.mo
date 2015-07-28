@@ -13,7 +13,12 @@ model PerformanceSpliceInline
 
 equation
   for i in 1:nPar loop
-    out[i] = Annex60.Experimental.Benchmarks.Utilities.Examples.spliceFunctionInline(pos=1, neg=-1, x=sine[i].y, deltax=1e-5);
+    out[i] =
+      Annex60.Experimental.Benchmarks.Utilities.FunctionsInlined.spliceFunctionInline(
+      pos=1,
+      neg=-1,
+      x=sine[i].y,
+      deltax=1e-5);
   end for;
   annotation (experiment(StopTime=10000, Interval=1),
       __Dymola_experimentSetupOutput,

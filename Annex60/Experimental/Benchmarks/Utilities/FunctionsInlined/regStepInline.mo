@@ -1,4 +1,4 @@
-within Annex60.Experimental.Benchmarks.Utilities.Examples;
+within Annex60.Experimental.Benchmarks.Utilities.FunctionsInlined;
 function regStepInline
   "Approximation of a general step, such that the characteristic is continuous and differentiable"
   extends Modelica.Icons.Function;
@@ -12,7 +12,8 @@ algorithm
   y := smooth(1, if x >  x_small then y1 else
                  if x < -x_small then y2 else
                  if x_small > 0 then (x/x_small)*((x/x_small)^2 - 3)*(y2-y1)/4 + (y1+y2)/2 else (y1+y2)/2);
-  annotation(inline=true,
+
+  annotation(Inline=true,
   Documentation(revisions="<html>
 <ul>
 <li><i>April 29, 2008</i>
