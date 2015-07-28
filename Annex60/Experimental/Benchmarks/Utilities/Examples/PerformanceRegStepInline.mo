@@ -22,7 +22,6 @@ equation
   end for;
   annotation (
     experiment(StopTime=10000, Interval=1),
-    __Dymola_experimentSetupOutput,
     Documentation(info="<html>
 <p>This benchmark tests the computation time of using 
 <a href=\"modelica://Modelica.Fluid.Utilities.regStep\">
