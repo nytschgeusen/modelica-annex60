@@ -1,0 +1,3 @@
+within Annex60.Experimental.SolarHeatingSystem.Components.ThermalStorages.BaseClasses;
+package StratificationModel
+end StratificationModel;
